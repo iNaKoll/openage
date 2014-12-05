@@ -72,7 +72,7 @@ void Texture::load() {
 		throw util::Error("Could not load texture from '%s': %s", filename.c_str(), IMG_GetError());
 	}
 	else {
-		log::dbg1("Loaded texture from '%s'", filename.c_str());
+		log::tdbg1(Texture, "Loaded texture from '%s'", filename.c_str());
 	}
 
 	// glTexImage2D format determination
@@ -109,7 +109,7 @@ void Texture::load() {
 		strncpy(meta_filename, filename.c_str(), m_len - 5);
 		strncpy(meta_filename + m_len - 5, "docx", 5);
 
-		log::msg("loading meta file %s", meta_filename);
+		log::tmsg(Texture, "loading meta file %s", meta_filename);
 
 		// get subtexture information by meta file exported by script
 		this->subtextures = util::read_csv_file<gamedata::subtexture>(meta_filename);
@@ -197,7 +197,7 @@ void Texture::draw(coord::pixel_t x, coord::pixel_t y,
                    Texture *alpha_texture, int alpha_subid) const {
 	glColor4f(1, 1, 1, 1);
 
-	//log::dbg("drawing texture at %hd, %hd", x, y);
+	//log::tdbg(Texture, "drawing texture at %hd, %hd", x, y);
 
 	bool use_playercolors = false;
 	bool use_alphashader = false;

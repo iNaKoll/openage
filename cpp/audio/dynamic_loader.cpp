@@ -46,7 +46,7 @@ OpusDynamicLoader::OpusDynamicLoader(const std::string &path)
 	channels = op_channel_count(op_file.get(), -1);
 
 	length = op_pcm_total(op_file.get(), -1) * 2;
-	log::msg("Create dynamic opus loader: len=%d, chan=%d", length, channels);
+	log::tmsg(OpusDynamicLoader, "Create dynamic opus loader: len=%d, chan=%d", length, channels);
 }
 
 uint32_t OpusDynamicLoader::get_length() {
@@ -114,7 +114,7 @@ pcm_chunk_t OpusDynamicLoader::load_chunk(uint32_t offset, uint32_t chunk_size) 
 		}
 	}
 
-	log::msg("DYNLOAD: file=%d all=%d", read_count, read_count * 2 / channels);
+	log::tmsg(OpusDynamicLoader, "DYNLOAD: file=%d all=%d", read_count, read_count * 2 / channels);
 	return std::move(chunk);
 }
 

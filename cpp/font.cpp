@@ -27,7 +27,7 @@ char *get_font_filename(const char *family, const char *style) {
 
 	//debug output: display above pattern as parsable string.
 	FcChar8 *query_string = FcNameUnparse(font_pattern);
-	log::dbg2("queried font: %s", query_string);
+	log::tdbg2(Font, "queried font: %s", query_string);
 	free(query_string);
 
 	//tell fontconfig to find the best match
@@ -37,7 +37,7 @@ char *get_font_filename(const char *family, const char *style) {
 	/*
 	//debug output: display matching font pattern as parsable string
 	FcChar8 *match_string = FcNameUnparse(font_match);
-	log::dbg2("resulting font: %s", match_string);
+	log::tdbg2(Font, "resulting font: %s", match_string);
 	free(match_string);
 	*/
 
@@ -50,7 +50,7 @@ char *get_font_filename(const char *family, const char *style) {
 	//copy the font filename because it will be freed when the pattern is destroyed.
 	char *font_filename = util::copy((const char *)font_filename_tmp);
 
-	log::dbg2("returning font file %s", font_filename);
+	log::tdbg2(Font, "returning font file %s", font_filename);
 
 	//deinitialize fontconfig.
 	FcPatternDestroy(font_match);

@@ -31,7 +31,7 @@ AudioManager::AudioManager(const std::string &device_name, int freq,
 	if (SDL_Init(SDL_INIT_AUDIO) < 0) {
 		throw util::Error("SDL audio initialization: %s", SDL_GetError());
 	} else {
-		log::msg("initialized SDL audio subsystems.");
+		log::tmsg(AudioManager, "initialized SDL audio subsystems.");
 	}
 
 	//set desired audio output format
@@ -67,7 +67,7 @@ AudioManager::AudioManager(const std::string &device_name, int freq,
 	mix_buffer.reset(new int32_t[4 * device_spec.samples *
 			device_spec.channels]);
 
-	log::msg("Using audio device '%s' [freq=%d,format=%d,channels=%d,samples=%d]",
+	log::tmsg(AudioManager, "Using audio device '%s' [freq=%d,format=%d,channels=%d,samples=%d]",
 			device_name.empty() ? "default" : device_name.c_str(),
 			device_spec.freq, device_spec.format, device_spec.channels,
 			device_spec.samples);

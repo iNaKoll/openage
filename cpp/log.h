@@ -139,7 +139,7 @@ struct sizeof_type_list<type_list<Args...>> {
  */
 template <typename T>
 struct configure {
-	using logger_list  = void;
+	using registered_loggers  = void;
 #ifdef NDEBUG
 	static const constexpr LogLevel log_level = LogLevel::MSG;
 #else
@@ -150,13 +150,13 @@ struct configure {
 /**
  * The LogManager basically holds a type list of loggers and forward its static log function to the loggers static log function.
  * The type list of the logger is provided by the 'configure' trait class that has to be specialized for LogManager by the user.
- * configure<LogManager>::logger_list is void by default to force the user to specialize the trait class and provide a valid logger list.
+ * configure<LogManager>::registered_loggers is void by default to force the user to specialize the trait class and provide a valid logger list.
  */
 class LogManager {
 public:
 	template <typename ThisType, typename LogTag>
 	static void log(logentry_type const & entry) {
-		log<LogTag>(entry, typename configure<ThisType>::logger_list{});
+		log<LogTag>(entry, typename configure<ThisType>::registered_loggers{});
 	}
 
 private:

@@ -82,7 +82,7 @@ Engine::Engine(util::Dir *data_dir, const char *windowtitle)
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		throw util::Error("SDL video initialization: %s", SDL_GetError());
 	} else {
-		log::msg("initialized SDL video subsystems.");
+		log::tmsg(Engine, "initialized SDL video subsystems.");
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -134,14 +134,14 @@ Engine::Engine(util::Dir *data_dir, const char *windowtitle)
 	// anyways, we need at least 1024x1024.
 	int max_texture_size;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_texture_size);
-	log::dbg("Maximum supported texture size: %d", max_texture_size);
+	log::tdbg(Engine, "Maximum supported texture size: %d", max_texture_size);
 	if (max_texture_size < 1024) {
 		throw util::Error("Maximum supported texture size too small: %d", max_texture_size);
 	}
 
 	int max_texture_units;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &max_texture_units);
-	log::dbg("Maximum supported texture units: %d", max_texture_units);
+	log::tdbg(Engine, "Maximum supported texture units: %d", max_texture_units);
 	if (max_texture_units < 2) {
 		throw util::Error("Your GPU has too less texture units: %d", max_texture_units);
 	}
@@ -181,7 +181,7 @@ Engine::~Engine() {
 }
 
 bool Engine::on_resize(coord::window new_size) {
-	log::dbg("engine window resize to: %dx%d\n", new_size.x, new_size.y);
+	log::tdbg(Engine, "engine window resize to: %dx%d\n", new_size.x, new_size.y);
 
 	// update engine window size
 	this->window_size = new_size;

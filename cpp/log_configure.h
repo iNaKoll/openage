@@ -3,15 +3,40 @@
 #ifndef OPENAGE_LOG_CONFIGURE_H_
 #define OPENAGE_LOG_CONFIGURE_H_
 
-namespace openage { namespace log {
+#include "log.h"
+
+namespace openage { 
+	// Forward declaration of type/class used as logger tags.
+	// These forward declarations are only necessary to configure the logger tags properly
+	// (i.e change their default behaviour) and not to actually use them (to log some messages).
+	struct GameMain;
+	struct Texture;
+	
+	namespace audio {
+		struct OpusInMemoryLoader;
+		struct DynamicResource;
+		struct AudioManager;
+		struct OpusDynamicLoader;
+	}
+
+	struct Font;
+
+	namespace util {
+		struct Error;
+		struct ExternalProfiler;
+	}
+	
+namespace log {
+	// Log configuration 
+	
 	// Policy based logger, use noop_printer to disable the associated information
 	// Once a logger has been defined, don't forget to register it through the specialization 
-	// of configure<LogManager>::logger_list (see below).
+	// of configure<LogManager>::registered_loggers (see below).
 
 	using ConsoleLogger = AsyncLogger<
 			  cout
 			, time_printer
-			, noop_printer
+			, tag_printer
 			, noop_printer
 			, colored_loglevel_printer
 			, origin_printer
@@ -48,17 +73,29 @@ namespace openage { namespace log {
 	>;
 	*/
 
-	// This specialization of configure for the LogManager has to define the logger list used throughout the whole application.
+	// This specialization of 'configure' for the LogManager has to define the registered loggers list used throughout the whole application.
 	// This logger list has to be maintained each time a new logger is defined.
 	template <>
 	struct configure<LogManager> {
-		using logger_list = type_list<ConsoleLogger>;
+		using registered_loggers = type_list<ConsoleLogger>;
 	};
 
-	// Defines the default logger tag verbosity level
+	// By default _any_ logger tag verbosity level is set to LogLevel::DBG.
+	// However if NDEBUG is defined the default verbosity level is LogLevel::MSG.
+	// If the default behaviour is good for you, there is no need to configure explicilty 
+	// a logger tag verbosity level and you don't need to edit this file to say anything 
+	// about your logger tag. Nevertheless, there's nothing wrong being explicit... :)
+	
+	// Below, this configure specialization sets the default logger tag (openage::log::root) verbosity level. 
+	// This tag is used by default (with log::dbg, log::msg, etc...), when the user doesn't provides 
+	// a logger tag (using log::tdbg(LoggerTag, ...) inseated).
 	template <>
 	struct configure<root> {
+#		ifndef NDEBUG
+		static const constexpr LogLevel log_level = LogLevel::DBG;
+#		else
 		static const constexpr LogLevel log_level = LogLevel::MSG;
+#		endif
 	};
 
 	/* Example of YourMom log configuration */
@@ -70,7 +107,24 @@ namespace openage { namespace log {
 		static const constexpr LogLevel log_level = LogLevel::IMP;
 	};
 	*/
-}} // namespace openage::log
+
+	// Defines some logger tags verbosity level
+	template <>
+	struct configure<audio::OpusInMemoryLoader> {
+		static const constexpr LogLevel log_level = LogLevel::MSG;
+	};
+
+	template <>
+	struct configure<GameMain> {
+		static const constexpr LogLevel log_level = LogLevel::IMP;
+	};
+
+	template <>
+	struct configure<Texture> {
+		static const constexpr LogLevel log_level = LogLevel::MSG;
+	};
+} // namespace log
+} // namespace openage
 
 #endif
 

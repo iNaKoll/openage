@@ -88,11 +88,11 @@ DynamicResource::DynamicResource(category_t category, int id,
 		num_chunks++;
 	}
 
-	log::msg("DYNRES: len=%d, chunks=%d", length, num_chunks);
+	log::tmsg(DynamicResource, "DYNRES: len=%d, chunks=%d", length, num_chunks);
 }
 
 void DynamicResource::use() {
-	log::msg("DYNRES: now in use");
+	log::tmsg(DynamicResource, "DYNRES: now in use");
 	// if use count was zero
 	if ((use_count++) == 0) {
 		// initialize chunks
@@ -104,7 +104,7 @@ void DynamicResource::use() {
 }
 
 void DynamicResource::stop_using() {
-	log::msg("DYNRES: no longer in use");
+	log::tmsg(DynamicResource, "DYNRES: no longer in use");
 	// if use count is now zero
 	if ((--use_count) == 0) {
 		// delete all chunks
@@ -122,7 +122,7 @@ std::tuple<const int16_t*,uint32_t> DynamicResource::get_samples(
 		uint32_t position, uint32_t num_samples) {
 	// TODO refactor implementation into single methods, probably change
 	// preloading behavior
-	log::msg("DYNRES: request pos=%u, num=%u", position, num_samples);
+	log::tmsg(DynamicResource, "DYNRES: request pos=%u, num=%u", position, num_samples);
 	// calculate chunk index and offset
 	int chunk_index = position / CHUNK_SIZE;
 	auto chunk_offset = position % CHUNK_SIZE;
@@ -130,7 +130,7 @@ std::tuple<const int16_t*,uint32_t> DynamicResource::get_samples(
 	if (chunk_index >= num_chunks) {
 		return std::make_tuple(nullptr, 0);
 	}
-	log::msg(" --> chunk_index=%d, chunk_offset=%d", chunk_index, chunk_offset);
+	log::tmsg(DynamicResource, " --> chunk_index=%d, chunk_offset=%d", chunk_index, chunk_offset);
 
 	// if chunk was not found, load it
 	if (chunks[chunk_index].empty()) {
@@ -167,10 +167,10 @@ std::tuple<const int16_t*,uint32_t> DynamicResource::get_samples(
 	// get chunk and calculate buffer
 	auto buf = &chunks[chunk_index].front() + chunk_offset;
 	if (CHUNK_SIZE - chunk_offset >= num_samples) {
-		log::msg(" --> RET %d", num_samples);
+		log::tmsg(DynamicResource, " --> RET %d", num_samples);
 		return std::make_tuple(buf, num_samples);
 	} else {
-		log::msg(" --> RET %d", CHUNK_SIZE - chunk_offset);
+		log::tmsg(DynamicResource, " --> RET %d", CHUNK_SIZE - chunk_offset);
 		return std::make_tuple(buf, CHUNK_SIZE - chunk_offset);
 	}
 }
