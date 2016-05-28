@@ -9,6 +9,7 @@ add_sources(libopenage
 	game_spec_link.cpp
 	generator_link.cpp
 	main_args_link.cpp
+	minimap.cpp
 	minimap_background.cpp
 	minimap_marker_type.cpp
 	minimap_unit_marker_points.cpp
