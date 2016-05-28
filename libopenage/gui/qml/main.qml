@@ -184,6 +184,7 @@ Item {
 					IngameHud {
 						anchors.fill: root
 
+						game: gameObj
 						actionMode: actionModeObj
 						playerName: gameControlObj.currentPlayerName
 						civIndex: gameControlObj.currentCivIndex
