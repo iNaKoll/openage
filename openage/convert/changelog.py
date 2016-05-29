@@ -34,6 +34,7 @@ CHANGES = (
     {"sounds"},
     {"graphics"},
     {"interface"},
+    {"metadata"},
 )
 
 # the current version number equals the number of changes
