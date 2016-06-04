@@ -10,6 +10,7 @@ add_sources(libopenage
 	generator_link.cpp
 	main_args_link.cpp
 	minimap_background.cpp
+	minimap_marker_type.cpp
 	resources_list_model.cpp
 )
 
