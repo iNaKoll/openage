@@ -66,7 +66,8 @@ enum class attr_type {
 	dropsite,
 	resource,
 	gatherer,
-	garrison
+	garrison,
+	minimap_mode
 };
 
 enum class attack_stance {
@@ -383,6 +384,26 @@ public:
 	}
 
 	std::vector<UnitReference> content;
+};
+
+template<> class Attribute<attr_type::minimap_mode>: public AttributeContainer {
+public:
+	Attribute(gamedata::minimap_modes minimap_mode, int8_t minimap_color)
+		:
+		AttributeContainer{attr_type::minimap_mode},
+		minimap_mode{minimap_mode},
+		minimap_color{minimap_color} {}
+
+	bool shared() const override {
+		return true;
+	}
+
+	std::shared_ptr<AttributeContainer> copy() const override {
+		return std::make_shared<Attribute<attr_type::minimap_mode>>(*this);
+	}
+
+	gamedata::minimap_modes minimap_mode;
+	int8_t minimap_color;
 };
 
 } // namespace openage
