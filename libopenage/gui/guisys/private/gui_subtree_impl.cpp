@@ -23,7 +23,7 @@ namespace qtsdl {
 namespace {
 QString find_sourcefile(const QString &source, const std::vector<std::string> &search_paths) {
 	if (!QDir::isAbsolutePath(source))
-		for (auto& path : search_paths) {
+		for (auto &path : search_paths) {
 			QDir dir{QString::fromStdString(path)};
 
 			if (dir.exists(source))
