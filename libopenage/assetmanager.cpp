@@ -99,6 +99,18 @@ Texture *AssetManager::get_texture(const std::string &name, bool use_metafile) {
 	return tex_it->second.get();
 }
 
+std::vector<gamedata::palette_color> AssetManager::get_palette(const std::string &name) {
+	auto pal_it = this->palettes.find(this->root.join(name));
+
+	if (pal_it == std::end(this->palettes)) {
+		auto &pal = this->palettes[name];
+		util::read_csv_file(this->root.join(name), pal);
+		return pal;
+	}
+
+	return pal_it->second;
+}
+
 void AssetManager::check_updates() {
 #if WITH_INOTIFY
 	// buffer for at least 4 inotify events
@@ -156,6 +168,7 @@ void AssetManager::clear() {
 	this->watch_fds.clear();
 #endif
 
+	this->palettes.clear();
 	this->textures.clear();
 }
 
