@@ -257,10 +257,10 @@ public:
 		StringFormatter<FString>{this->buffer},
 		buffer{other} {}
 
-	FString(std::string &&other)
+	FString(std::string &&other) noexcept
 		:
 		StringFormatter<FString>{this->buffer},
-		buffer{other} {}
+		buffer{std::move(other)} {}
 
 	FString &operator =(const std::string &other) {
 		this->buffer = other;
