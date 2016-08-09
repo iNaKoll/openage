@@ -63,7 +63,7 @@ public:
 
 	// for construction from lambdas and other callables (from C++).
 	template<typename F>
-	Func(F &&f) {
+	Func(F &&f) noexcept {
 		this->fptr = f;
 	}
 
@@ -83,7 +83,7 @@ public:
 
 	// for assignment of lambdas and other callables (from C++).
 	template<typename F>
-	Func<ReturnType, ArgTypes ...> &operator =(F &&f) {
+	Func<ReturnType, ArgTypes ...> &operator =(F &&f) noexcept {
 		this->fptr = f;
 		return *this;
 	}
